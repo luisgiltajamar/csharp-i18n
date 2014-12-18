@@ -1,0 +1,42 @@
+﻿@using System.Threading
+@using MvcInternacionalizacion.Models
+@{
+    var lang = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
+    if (Request.Cookies["lang"] != null)
+    {
+        lang = Request.Cookies["lang"].Value;
+    }
+
+}
+
+<select id="idioma">
+    @foreach (var item in 
+        IdiomasSitio.IdiomasDisponibles)
+    {
+        <option value="@item.NombreCultura" >
+            @item.NombreIdioma
+        </option>
+    }
+
+</select>
+
+<script>
+    (function () {
+        $("#idioma").val("@lang");
+        $("#idioma").change(function() {
+            var val = $("#idioma").val();
+
+            $.post("/Home/Idioma?idi=" + val, function() {
+
+                location.reload();
+
+
+            } );
+
+
+        });
+
+
+    })();
+
+</script>
